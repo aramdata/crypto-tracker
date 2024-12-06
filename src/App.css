@@ -1,0 +1,22 @@
+
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tokens-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.token-card {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
