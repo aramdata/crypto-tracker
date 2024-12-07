@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(() => {
     // Load tokens from local JSON
-    fetch("crypto-tracker/tokens.json")
+    fetch("tokens.json")
       .then((res) => res.json())
       .then((tokens) => setTokens(tokens));
   }, []);
