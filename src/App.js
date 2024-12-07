@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// "homepage": "https://aramdata.github.io/crypto-tracker",
 
 const App = () => {
   const [tokens, setTokens] = useState([]);
@@ -10,13 +9,13 @@ const App = () => {
 
   useEffect(() => {
     // Load tokens from local JSON
-    fetch("tokens.json")
+    fetch("crypto-tracker/tokens.json")
       .then((res) => res.json())
       .then((tokens) => setTokens(tokens));
   }, []);
 
   useEffect(() => {
-    var {totalInvest,totalProfit,totalFinalInvest}=0;
+    var { totalInvest, totalProfit, totalFinalInvest } = 0;
 
     const fetchPrices = async () => {
       const updatedData = await Promise.all(
@@ -29,8 +28,8 @@ const App = () => {
             const currentPrice = parseFloat(response.data.price);
             const profit = ((currentPrice - buyPrice) * (investment / buyPrice));
             var currentTarget = targets.find((target) => currentPrice > target) || "down with first target!";
-            const currentInvest=investment+profit;
-            return { symbol, buyPrice, investment, currentPrice, profit, targets, currentTarget,currentInvest };
+            const currentInvest = investment + profit;
+            return { symbol, buyPrice, investment, currentPrice, profit, targets, currentTarget, currentInvest };
           } catch (error) {
             console.error(`Error fetching price for ${symbol}:`, error);
             return { symbol, error: "Error fetching data" };
@@ -46,30 +45,50 @@ const App = () => {
   return (
     <div className="App">
       <h1>Crypto Tracker</h1>
-      {}
-      <p>totalInvest: ${data.reduce((n, {investment}) => n + investment, 0)?.toFixed(2)}</p>
-                <p>totalProfit: ${data.reduce((n, {profit}) => n + profit, 0)?.toFixed(2)}</p>
-                <p>totalFinalInvest: ${data.reduce((n, {currentInvest}) => n + currentInvest, 0)?.toFixed(2)}</p>
-      <div className="tokens-container">
-        {data.map((token, index) => (
-          <div key={index} className="token-card">
-            <h2>{token.symbol}</h2>
-            {token.error ? (
-              <p>{token.error}</p>
-            ) : (
-              <>
-                <p>Buy Price: ${token.buyPrice}</p>
-                <p>Investment: ${token.investment}</p>
-                <p>Current Price: ${token.currentPrice?.toFixed(2)}</p>
-                <p>Profit: ${token.profit?.toFixed(2)}</p>
-                <p>Targets: {token.targets.join(", ")}</p>
-                <p>Current Target: {token.currentTarget}</p>
-                <p>Current Inverst: {token.currentInvest?.toFixed(2)}</p>
 
-              </>
-            )}
-          </div>
-        ))}
+    
+      <div className="tokens-container">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <td>Symbol</td>
+              <td>Buy Price</td>
+              <td>Investment</td>
+              <td>Current Price</td>
+              <td>Profit</td>
+              <td>Targets</td>
+              <td>Current Target</td>
+              <td>Current Inverst</td>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            {data.map((token, index) => (
+              <tr key={index} className="token-card">
+                <td>{token.symbol}</td>
+                <td>{token.buyPrice}</td>
+                <td>{token.investment}</td>
+                <td>{token.currentPrice}</td>
+                <td>{token.profit?.toFixed(2)}</td>
+                <td>{token.targets.join(", ")}</td>
+                <td>{token.currentTarget}</td>
+                <td>{token.currentInvest?.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tr key="sum" className="token-card">
+                <td>Total</td>
+                <td></td>
+                <td>{data.reduce((n, { investment }) => n + investment, 0)?.toFixed(2)}</td>
+                <td></td>
+                <td>{data.reduce((n, { profit }) => n + profit, 0)?.toFixed(2)}</td>
+                <td></td>
+                <td></td>
+                <td>{data.reduce((n, { currentInvest }) => n + currentInvest, 0)?.toFixed(2)}</td>
+              </tr>
+        </table>
+
       </div>
     </div>
   );
